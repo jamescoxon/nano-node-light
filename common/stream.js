@@ -98,7 +98,7 @@ function getSize_Light(header) {
 }
 
 function getSize(header, mode) {
-  if (mode == 1) {
+  if (mode === 1) {
     return getSize_Light(header)
   } else {
     return getSize_Origin(header)
@@ -113,7 +113,7 @@ function streamPacketBody(packet) {
   state.body.set(body, state.bodySize)
   state.bodySize += body.length
 
-  if (state.bodySize == state.expectedBodySize) {
+  if (state.bodySize === state.expectedBodySize) {
     const msgInfo = Object.assign({}, state)
     delete msgInfo.bodySize
     delete msgInfo.expectedBodySize
@@ -134,7 +134,7 @@ function streamPacket(packet) {
 
   const state = this.state
 
-  if (state.headerLength == 8) {
+  if (state.headerLength === 8) {
     this.streamPacketBody(packet)
   } else {
     const headerPtr = 8 - state.headerLength
@@ -142,7 +142,7 @@ function streamPacket(packet) {
     state.header.set(header, state.headerLength)
     state.headerLength += header.length
 
-    if (state.headerLength == 8) {
+    if (state.headerLength === 8) {
       if (state.header[0] !== constants.MAGIC_NUMBER) return true
       if (state.header[1] !== this.network) return true
       if (state.header[2] < 0x12) return true
@@ -213,9 +213,9 @@ class NanoStream {
   }
 
   emit(evName, ...args) {
-    if (this._ev[evName] == undefined) return
-    this._ev[evName].forEach(async (cb) => {
-      cb(...args)
+    if (typeof this._ev[evName] === 'undefined') return
+    this._ev[evName].forEach((listener) => {
+      listener(...args)
     })
   }
 
